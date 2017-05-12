@@ -181,6 +181,10 @@ if child.isKind(of: Parent) {
 
 ## その他
 
+### リソース管理はR.swfitでする
+[R.swift](https://github.com/mac-cain13/R.swift)を利用してリソース管理にかかる工数を下げる
+- Controller, Segue, Images, String, Storyboard, Nibなどのリソース管理が自動化される
+
 ### ParentControllerからChildViewControllerの@IBoutletを参照する時要注意！
 - ChildViewControllerのIBOutletも必ずOptional bindingで参照する
   - クラッシュの原因
@@ -202,10 +206,6 @@ let classB = ClassA(value: "value")
 // O
 let classA = ClassA.init(value: "value")
 ```
-
-### リソース管理はR.swfitでする
-[R.swift](https://github.com/mac-cain13/R.swift)を利用してリソース管理にかかる工数を下げる
-- Controller, Segue, Images, String, Storyboard, Nibなどのリソース管理が自動化される
 
 <br>
 <br>
