@@ -12,8 +12,6 @@
 
 ## 変数定義
 
-### 変数
-
 - 形は省略する
   - Optionalの場合は指定する
 
@@ -32,13 +30,10 @@
 
   // O
   let optionalValue: String?
-  // O
-  let optionalValue: String?
-
 
 ```
 
-## 定数
+## 定数定義
 - 定数名で理解できる名名にする
 - 定数のタイプは指定しない
 
@@ -110,9 +105,6 @@ if let type = Type.init(rawValue: "ja") {
 
 ## コメント
 - ClassやStructureには概要を必ず記述する
-- Playgroundの場合はMarkdown適用が可能なので積極的に利用する
-- コメントは [Apple](https://developer.apple.com/library/content/documentation/Xcode/Reference/xcode_markup_formatting_ref/AddingMarkup.html#//apple_ref/doc/uid/TP40016497-CH100-SW1)の標準規約を守る
-  - Quick Helpにも反映されるしドキュメント化も可能
 
 ```
 // X
@@ -127,9 +119,9 @@ class ClassA {
     ...
 }
 ```
-
-> Apple Format  
-
+- コメントは [Apple](https://developer.apple.com/library/content/documentation/Xcode/Reference/xcode_markup_formatting_ref/AddingMarkup.html#//apple_ref/doc/uid/TP40016497-CH100-SW1)の標準規約を守る
+- Quick Helpにも反映されるしドキュメント化も可能
+  
 ```
 /**
   Another description
@@ -142,18 +134,59 @@ class ClassA {
  */
 ```
 
+- Playgroundの場合はMarkUp適用が可能なので積極的に利用する
+
+```
+//: Title
+
+/*:
+ ### This is Playground
+
+ */
+```
+
 ## Protocol, Delegate
 - ProtocolとDelegateの用途を明確にして名名する
+
+## キャスティング
+- ダウンキャスティングはOptionalを利用する
+
+```
+class Parent {
+  func test(){ }
+}
+
+class Child: Parent {
+    
+}
+
+let child = Child.init()
+
+// O
+if let child = child as? Parent {
+    print("ここで書く")
+}
+
+// X
+if child is Parent {
+    (child as Parent).test()
+}
+
+// X
+if child.isKind(of: Parent) {
+    (child as Parent).test()
+}
+```
 
 
 ## その他
 
-- ParentControllerからChildViewControllerの@IBoutletを参照する時要注意！
+### ParentControllerからChildViewControllerの@IBoutletを参照する時要注意！
 - ChildViewControllerのIBOutletも必ずOptional bindingで参照する
   - クラッシュの原因
 - Protocolでお互いに通信する
 
-- Objectはinitで生成
+### Objectはinitで生成
 
 ```
 class ClassA {
@@ -170,76 +203,13 @@ let classB = ClassA(value: "value")
 let classA = ClassA.init(value: "value")
 ```
 
+### リソース管理はR.swfitでする
+[R.swift](https://github.com/mac-cain13/R.swift)を利用してリソース管理にかかる工数を下げる
+- Controller, Segue, Images, String, Storyboard, Nibなどのリソース管理が自動化される
 
+<br>
+<br>
+<br>  
 
-
-
-
-
-
-
-
-
-———————————
-내가 생각하는 것
-
-코딩규약의 의도
-- 통일성 있는 소스
-- 최소한의 코딩으로 다른 엔지니어에게 모든 정보를 전달할 수 있는 가장 효율적이라고 생각하는 방법을 정의
-
-가급적이면 NSObject씨리즈를 쓰지 않는다.
-
-변수정의
-변수/정수
-
-문자열
-
-func정의
-- 기본적으로 파라메터는 명사를 씀.
-- 전치사를 이용해서 구체적으로 정의를 하고 싶은 경우에는 전치사를 아규먼트로 넣음.
-    - 아규먼트의 활용예?? 패턴을 나열해 볼 것
-
-Optional사용
-- 캐스팅, Dic의 값 참조등 nil이 들어올 가능성이 조금이라도 있을 경우 Optional을 사용
-- 단, 강제참조는 @IBOutlet이외엔 지양한다.
-    - ContainerView처럼 부모Controller에서 자식Controller의 IBOutlet을 참조하는 처리의 경우 Optional binding을 이용해서 참조하도록 함.
-
-protocol, delegate
-- 사양이 명확한 경우에는 프로토콜/ 프로토콜 상속/ 프로토콜의 확장을 이용
-- 사용목적에 따라서 말머리에 명확하게 씀.
-
-Extension활용
-- 간단히 Cocoa framework쪽 Class, Struct의 확장뿐만 아니라.
-- Delegate도 이것을 이용해서 따로 정의
-
-Generic활용
-- 특정형에 구애받지 않고 정의하는 경우
-
-Private, fileprivate등 접근제한자 사용법
-- func, property등 목적에 맞게 제한자를 걸어서 정의
-    - 심지어 @IBOutlet도!
-
-로컬라이징?
- - 문자열은 didSet에 이용
-
-리소스관리?
-- R.swift를 이용
-- ViewController, Segue, Images, String, Stroyboard, Nib등 리소스 관리를 위한 정의를 일일이 하지 않아도 됨.
-    - 관련 문서 https://github.com/mac-cain13/R.swift
-
-
-디자이너블은 지양
-- Extension으로 만들어 두는건 지향?
-    - 퍼포먼스 저하의 원인?
-- Xcode의 퍼포먼스 저하의 원인..
-
-코멘트
-https://developer.apple.com/library/content/documentation/Xcode/Reference/xcode_markup_formatting_ref/AddingMarkup.html#//apple_ref/doc/uid/TP40016497-CH100-SW1
-- 코멘트에 관해서는 애플 문서를 준수하자.
-- 간단히 /// 를 이용해서 써놓으면 Quick Help에 만영이 됨.
-- 옵션클릭으로 간단히 설명을 볼 수 있어야함.
-- 설명 파라미터랑 리턴값 정도만 적으면 될 듯..
-    - 그외 설명을 부가하고 싶을 경우엔??
-- http://nshipster.com/swift-documentation/
-    - 이사람꺼도 괜찮음.
--
+## 改版履歴
+- 2017.5.12　基本コーディングルール記述
